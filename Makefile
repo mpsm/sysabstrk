@@ -1,4 +1,4 @@
-SRCS= task-posix.c queue-posix.c test.c
+SRCS= task-posix.c queue-posix.c test.c system-posix.c time-posix.c
 OBJS= $(patsubst %.c,%.o,$(SRCS))
 
 CC= gcc
