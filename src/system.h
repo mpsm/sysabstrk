@@ -1,6 +1,8 @@
 #ifndef __SYSTEM_H__
 #define __SYSTEM_H__
 
+#include "system_types.h"
+
 #include <stdint.h>
 
 /* type definitions */
