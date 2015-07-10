@@ -2,7 +2,7 @@ SRCS= task.c queue.c system.c time.c smphr.c
 INCS= system.h system-config.h task.h queue.h time.h smphr.h
 
 EXAMPLESDIR= examples
-EXMPLS= simple
+EXMPLS= simple semaphore
 EXBINS= $(patsubst %,$(EXAMPLESDIR)/%,$(EXMPLS))
 
 SYSTEM?= posix
