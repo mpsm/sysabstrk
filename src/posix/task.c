@@ -8,6 +8,6 @@
 
 bool task_create(task_t *tsk, task_routine_t rt, void *arg)
 {
-    return pthread_create(tsk, NULL, rt, arg) == 0;
+    return pthread_create(tsk->handle, NULL, rt, arg) == 0;
 }
 
