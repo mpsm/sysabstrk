@@ -1,5 +1,5 @@
-SRCS= task.c queue.c system.c time.c
-INCS= system.h system-config.h task.h queue.h time.h
+SRCS= task.c queue.c system.c time.c smphr.c
+INCS= system.h system-config.h task.h queue.h time.h smphr.h
 OBJS= $(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
 
 EXAMPLESDIR= examples
