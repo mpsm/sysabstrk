@@ -1,5 +1,5 @@
-#include "system.h"
-#include "task.h"
+#include <system/system.h>
+#include <system/task.h>
 
 #include <pthread.h>
 
@@ -8,6 +8,6 @@
 
 bool task_create(task_t *tsk, task_routine_t rt, void *arg)
 {
-    return pthread_create(tsk->handle, NULL, rt, arg) == 0;
+    return pthread_create((pthread_t*)&tsk->handle, NULL, rt, arg) == 0;
 }
 
