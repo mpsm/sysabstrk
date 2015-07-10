@@ -15,6 +15,7 @@ LD= gcc
 AR= ar
 
 CFLAGS= -O0 -g
+CFLAGS+= -Wall -Werror
 CFLAGS+= -I src
 LDFLAGS= -lpthread -lrt
 
