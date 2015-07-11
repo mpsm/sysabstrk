@@ -1,23 +1,92 @@
 #include <system/system.h>
 #include <system/queue.h>
 #include <system/smphr.h>
+#include <system/mutex.h>
 
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
+#include <string.h>
 
 bool queue_create(queue_t *q, size_t size, size_t elsize)
 {
+    bool result = false;
+
     q->size = size;
     q->element_size = elsize;
     q->elements = 0;
-    q->data = malloc(size * elsize);
+    q->index = 0;
 
-    return q->data != NULL && smphr_init(&q->sem, size);
+    if((q->data = malloc(size * elsize)) == NULL) {
+        goto error;
+    }
+    
+    if(!smphr_init(&q->sem, size)) {
+        goto error;
+    }
+
+    if(!mutex_init(&q->mtx)) {
+        goto error;
+    }
+
+    result = true;
+
+error:
+    return result;
 }
 
 size_t queue_elements_count(queue_t *q)
 {
-    return q->elements;
+    size_t elements;
+
+    mutex_lock(&q->mtx, SYSTEM_MAX_WAIT);
+    elements = q->elements;
+    mutex_unlock(&q->mtx);
+
+    return elements;
 }
+
+bool queue_push(queue_t *q, void *el, system_tick_t ticks)
+{
+    void *start;
+
+    mutex_lock(&q->mtx, SYSTEM_MAX_WAIT);
+    if(q->elements == q->size) {
+        mutex_unlock(&q->mtx);
+        return false;
+    }
+
+    start = q->data + (q->index + q->elements) % q->size * q->element_size;
+    memcpy(start, el, q->element_size);
+    q->elements++;
+
+    mutex_unlock(&q->mtx);
+    smphr_give(&q->sem);
+
+    return true;
+}
+
+bool queue_pop(queue_t *q, void *el, system_tick_t ticks)
+{
+    void *start;
+
+    mutex_lock(&q->mtx, SYSTEM_MAX_WAIT);
+    if(q->elements == 0) {
+        mutex_unlock(&q->mtx);
+        return false;
+    }
+    mutex_unlock(&q->mtx);
+
+    smphr_take(&q->sem, ticks);
+
+    mutex_lock(&q->mtx, SYSTEM_MAX_WAIT);
+    start = q->data + q->index * q->element_size;
+    memcpy(el, start, q->element_size);
+    q->index = (q->index + 1) % q->element_size;
+    q->elements--;
+    mutex_unlock(&q->mtx);
+
+    return true;
+}
+

@@ -22,8 +22,12 @@ bool smphr_take(smphr_t *s, system_tick_t ticks)
 {
     struct timespec wait;
 
-    if(ticks == 0) {
+    if(ticks == SYSTEM_NO_WAIT) {
         return sem_trywait((sem_t *)s->handle) == 0;
+    }
+
+    if(ticks == SYSTEM_MAX_WAIT) {
+        return sem_wait((sem_t *)s->handle) == 0;
     }
 
     system_delay_to_timespec(ticks, &wait);

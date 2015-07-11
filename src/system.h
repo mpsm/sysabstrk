@@ -12,6 +12,9 @@
 /* type definitions */
 typedef uint32_t system_tick_t;
 
+#define SYSTEM_NO_WAIT                  ((uint32_t)0)
+#define SYSTEM_MAX_WAIT                 (UINT32_MAX)
+
 /* public methods */
 void system_init(void);
 bool system_start(void);
