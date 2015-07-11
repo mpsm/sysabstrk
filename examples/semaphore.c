@@ -26,6 +26,8 @@ int main(void)
     task_t task1h;
     task_t task2h;
 
+    system_init();
+
     printf("System abstraction test - POSIX implementation\n");
     printf("Semaphore example application\n");
 
@@ -33,6 +35,8 @@ int main(void)
 
     task_create(&task1h, task, (void*)1);
     task_create(&task2h, task, (void*)2);
+
+    system_start();
 
     system_delay(5000);
 

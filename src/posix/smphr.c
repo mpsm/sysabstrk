@@ -13,7 +13,8 @@
 bool smphr_init(smphr_t *s, unsigned int value)
 {
     s->value = value;
-    s->handle = (sem_t *)malloc(sizeof(sem_t));
+    s->handle = malloc(sizeof(sem_t));
+
     return sem_init((sem_t *)s->handle, 0, value) == 0;
 }
 

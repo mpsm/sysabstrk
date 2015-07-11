@@ -7,12 +7,13 @@
 #include "system-config.h"
 
 #include <stdint.h>
+#include <stdbool.h>
 
 /* type definitions */
 typedef uint32_t system_tick_t;
 
 /* public methods */
 void system_init(void);
-void system_start(void);
+bool system_start(void);
 
 #endif /* __SYSTEM_H__ */

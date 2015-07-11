@@ -18,8 +18,9 @@ int main(void)
     task_t test_task;
     printf("System abstraction test - POSIX implementation\n");
 
+    system_init();
     task_create(&test_task, test, NULL);
-
+    system_start();
     system_delay(5000);
 
     return 0;

@@ -1,4 +1,4 @@
-SRCS= task.c queue.c system.c time.c smphr.c mutex.c
+SRCS= task.c queue.c time.c smphr.c mutex.c
 INCS= system.h system-config.h task.h queue.h time.h smphr.h mutex.h
 
 EXAMPLESDIR= examples
