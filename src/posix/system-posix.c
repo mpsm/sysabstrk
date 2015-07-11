@@ -69,10 +69,5 @@ bool system_start()
         } 
     }
 
-    /* unblock SIGINT and wait for it */
-    sigemptyset(&sigs);
-    sigaddset(&sigs, SIGINT);
-    pthread_sigmask(SIG_UNBLOCK, &sigs, NULL);
-
     return sigwait(&sigs, &signum) == 0;
 }
