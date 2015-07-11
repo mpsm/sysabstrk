@@ -38,7 +38,5 @@ int main(void)
 
     system_start();
 
-    system_delay(5000);
-
     return 0;
 }

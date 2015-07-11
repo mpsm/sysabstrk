@@ -3,6 +3,7 @@
 
 #include <time.h>
 #include <pthread.h>
+#include <signal.h>
 
 #include <stdbool.h>
 #include <string.h>
@@ -52,13 +53,26 @@ bool system_task_reg(task_t *t)
 
 bool system_start()
 {
+    sigset_t sigs;
     unsigned int i = 0;
-    bool result = true;
+    int signum;
 
+    /* create full signal set */
+    sigfillset(&sigs);
+    pthread_sigmask(SIG_BLOCK, &sigs, NULL);
+
+    /* spawn threads */
     for(i = 0; i < task_count; ++i) {
         task_t *t = tasks[i];
-        result &= pthread_create((pthread_t*)t->handle, NULL, t->rt, t->arg) == 0;
+        if(pthread_create((pthread_t*)t->handle, NULL, t->rt, t->arg) != 0) {
+            return false;
+        } 
     }
 
-    return result;
+    /* unblock SIGINT and wait for it */
+    sigemptyset(&sigs);
+    sigaddset(&sigs, SIGINT);
+    pthread_sigmask(SIG_UNBLOCK, &sigs, NULL);
+
+    return sigwait(&sigs, &signum) == 0;
 }

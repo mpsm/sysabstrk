@@ -21,7 +21,6 @@ int main(void)
     system_init();
     task_create(&test_task, test, NULL);
     system_start();
-    system_delay(5000);
 
     return 0;
 }
