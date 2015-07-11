@@ -5,5 +5,6 @@
 #include <time.h>
 
 void system_ticks_to_timespec(system_tick_t ticks, struct timespec *ts);
+void system_delay_to_timespec(system_tick_t ticks, struct timespec *ts);
 
 #endif /* __SYSTEM_POSIX_H__ */
