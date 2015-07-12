@@ -78,7 +78,7 @@ bool queue_pop(queue_t *q, void *el, system_tick_t ticks)
     mutex_lock(&q->mtx, SYSTEM_MAX_WAIT);
     start = q->data + q->index * q->element_size;
     memcpy(el, start, q->element_size);
-    q->index = (q->index + 1) % q->element_size;
+    q->index = (q->index + 1) % q->size;
     q->elements--;
     mutex_unlock(&q->mtx);
 
