@@ -1,7 +1,7 @@
 #ifndef __SYSTEM_POSIX_H__
 #define __SYSTEM_POSIX_H__
 
-#include <system/system.h>
+#include <system/system_base.h>
 #include <system/task.h>
 
 #include <time.h>

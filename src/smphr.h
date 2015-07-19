@@ -1,6 +1,7 @@
 #ifndef __SYSTEM_SMPHR_H__
 #define __SYSTEM_SMPHR_H__
 
+#include <system/system_base.h>
 #include <stdbool.h>
 
 typedef void* smphr_t;

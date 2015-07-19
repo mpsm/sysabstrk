@@ -1,7 +1,8 @@
 #ifndef __SYSTEM_TASK_H__
 #define __SYSTEM_TASK_H__
 
-#include "system.h"
+#include <system/system_base.h>
+
 #include <stdbool.h>
 
 /* task descriptor */

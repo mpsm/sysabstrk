@@ -1,5 +1,5 @@
 SRCS= task.c queue.c time.c smphr.c mutex.c
-INCS= system.h system-config.h task.h queue.h time.h smphr.h mutex.h
+INCS= system.h system_base.h system_config.h task.h queue.h time.h smphr.h mutex.h
 
 EXAMPLESDIR= examples
 EXMPLS= simple semaphore queues
