@@ -3,10 +3,7 @@
 
 #include <stdbool.h>
 
-typedef struct {
-    void *handle;
-    unsigned int value;
-} smphr_t;
+typedef void* smphr_t;
 
 bool smphr_init(smphr_t *s, unsigned int value);
 bool smphr_take(smphr_t *s, system_tick_t ticks);

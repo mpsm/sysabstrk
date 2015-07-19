@@ -6,7 +6,7 @@
 
 #include <stdbool.h>
 
-typedef smphr_t mutex_t;
+typedef void* mutex_t;
 
 bool mutex_init(mutex_t *m);
 bool mutex_lock(mutex_t *m, system_tick_t t);
