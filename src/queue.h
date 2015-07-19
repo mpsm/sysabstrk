@@ -8,15 +8,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-typedef struct {
-    smphr_t sem;
-    mutex_t mtx;
-    size_t size;
-    size_t element_size;
-    size_t elements;
-    size_t index;
-    void *data;
-} queue_t;
+typedef void* queue_t;
 
 bool queue_create(queue_t *q, size_t size, size_t elsize);
 size_t queue_elements_count(queue_t *q);

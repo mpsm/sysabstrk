@@ -2,6 +2,7 @@
 #include <system/queue.h>
 #include <system/smphr.h>
 #include <system/mutex.h>
+#include "posix-queue.h"
 
 #include <stdlib.h>
 #include <stdbool.h>
@@ -9,8 +10,9 @@
 #include <stddef.h>
 #include <string.h>
 
-bool queue_create(queue_t *q, size_t size, size_t elsize)
+bool queue_create(queue_t *queue, size_t size, size_t elsize)
 {
+    posix_queue_t *q = (posix_queue_t *)queue;
     bool result = false;
 
     q->size = size;
@@ -36,8 +38,9 @@ error:
     return result;
 }
 
-size_t queue_elements_count(queue_t *q)
+size_t queue_elements_count(queue_t *queue)
 {
+    posix_queue_t *q = (posix_queue_t *)queue;
     size_t elements;
 
     mutex_lock(&q->mtx, SYSTEM_MAX_WAIT);
@@ -47,8 +50,9 @@ size_t queue_elements_count(queue_t *q)
     return elements;
 }
 
-bool queue_push(queue_t *q, void *el, system_tick_t ticks)
+bool queue_push(queue_t *queue, void *el, system_tick_t ticks)
 {
+    posix_queue_t *q = (posix_queue_t *)queue;
     void *start;
 
     mutex_lock(&q->mtx, SYSTEM_MAX_WAIT);
@@ -67,8 +71,9 @@ bool queue_push(queue_t *q, void *el, system_tick_t ticks)
     return true;
 }
 
-bool queue_pop(queue_t *q, void *el, system_tick_t ticks)
+bool queue_pop(queue_t *queue, void *el, system_tick_t ticks)
 {
+    posix_queue_t *q = (posix_queue_t *)queue;
     void *start;
 
     if(!smphr_take(&q->sem, ticks)) {
@@ -84,4 +89,3 @@ bool queue_pop(queue_t *q, void *el, system_tick_t ticks)
 
     return true;
 }
-
