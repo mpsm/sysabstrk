@@ -57,6 +57,7 @@ bool system_start()
     sigset_t sigs;
     unsigned int i = 0;
     int signum;
+    bool retval = true;
 
     /* create full signal set */
     sigfillset(&sigs);
@@ -70,5 +71,17 @@ bool system_start()
         } 
     }
 
-    return sigwait(&sigs, &signum) == 0;
+    /* wait for a signal */
+    if(sigwait(&sigs, &signum) != 0) {
+        return false;
+    }
+
+    /* cancel all running threads */
+    for(i = 0; i < task_count; ++i) {
+        retval &= pthread_cancel(*(pthread_t *)tasks[i]->handle) == 0;
+        retval &= pthread_join(*(pthread_t *)tasks[i]->handle, NULL);
+        task_destroy(tasks[i]);
+    }
+
+    return retval;
 }

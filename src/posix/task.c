@@ -17,3 +17,7 @@ bool task_create(task_t *tsk, task_routine_t rt, void *arg)
     return system_task_reg(tsk);
 }
 
+void task_destroy(task_t *tsk)
+{
+    free(tsk->handle);
+}
