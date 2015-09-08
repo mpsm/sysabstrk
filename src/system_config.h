@@ -6,7 +6,7 @@
 #endif
 
 #if !defined(SYSTEM_CONFIG_MAX_TASKS)
-#  define SYSTEM_CONFIG_MAX_TASKS                 (1)
+#  define SYSTEM_CONFIG_MAX_TASKS                 (10)
 #endif
 
 #endif /* __SYSTEM_CONFIG_H__ */

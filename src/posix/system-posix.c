@@ -43,7 +43,7 @@ void system_delay_to_timespec(system_tick_t delay, struct timespec *ts)
 
 bool system_task_reg(task_t *t)
 {
-    if(task_count < SYSTEM_CONFIG_TICKS_1S) {
+    if(task_count < SYSTEM_CONFIG_MAX_TASKS) {
         tasks[task_count] = t;
         task_count++;
         return true;
