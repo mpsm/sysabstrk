@@ -12,9 +12,9 @@
 
 bool smphr_init(smphr_t *s, unsigned int value)
 {
-    s = malloc(sizeof(sem_t));
+    *s = malloc(sizeof(sem_t));
 
-    return sem_init((sem_t *)s, 0, value) == 0;
+    return sem_init(*(sem_t **)s, 0, value) == 0;
 }
 
 bool smphr_take(smphr_t *s, system_tick_t ticks)
@@ -30,11 +30,11 @@ bool smphr_take(smphr_t *s, system_tick_t ticks)
     }
 
     system_delay_to_timespec(ticks, &wait);
-    return sem_timedwait((sem_t *)s, &wait) == 0;
+    return sem_timedwait(*(sem_t **)s, &wait) == 0;
 }
 
 bool smphr_give(smphr_t *s)
 {
-    return sem_post((sem_t *)s) == 0;
+    return sem_post(*(sem_t **)s) == 0;
 }
 

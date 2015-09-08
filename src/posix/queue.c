@@ -12,9 +12,10 @@
 
 bool queue_create(queue_t *queue, size_t size, size_t elsize)
 {
-    posix_queue_t *q = (posix_queue_t *)queue;
+    posix_queue_t *q = malloc(sizeof(posix_queue_t));
     bool result = false;
 
+    *queue = (queue_t *)q;
     q->size = size;
     q->element_size = elsize;
     q->elements = 0;
@@ -33,14 +34,19 @@ bool queue_create(queue_t *queue, size_t size, size_t elsize)
     }
 
     result = true;
+    goto ok;
 
 error:
+    free(q);
+    *queue = NULL;
+
+ok:
     return result;
 }
 
 size_t queue_elements_count(queue_t *queue)
 {
-    posix_queue_t *q = (posix_queue_t *)queue;
+    posix_queue_t *q = *(posix_queue_t **)queue;
     size_t elements;
 
     mutex_lock(&q->mtx, SYSTEM_MAX_WAIT);
@@ -52,7 +58,7 @@ size_t queue_elements_count(queue_t *queue)
 
 bool queue_push(queue_t *queue, void *el, system_tick_t ticks)
 {
-    posix_queue_t *q = (posix_queue_t *)queue;
+    posix_queue_t *q = *(posix_queue_t **)queue;
     void *start;
 
     mutex_lock(&q->mtx, SYSTEM_MAX_WAIT);
@@ -73,7 +79,7 @@ bool queue_push(queue_t *queue, void *el, system_tick_t ticks)
 
 bool queue_pop(queue_t *queue, void *el, system_tick_t ticks)
 {
-    posix_queue_t *q = (posix_queue_t *)queue;
+    posix_queue_t *q = *(posix_queue_t **)queue;
     void *start;
 
     if(!smphr_take(&q->sem, ticks)) {
