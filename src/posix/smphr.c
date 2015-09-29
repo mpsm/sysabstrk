@@ -38,3 +38,7 @@ bool smphr_give(smphr_t *s)
     return sem_post(*(sem_t **)s) == 0;
 }
 
+void smphr_destroy(smphr_t *s)
+{
+    free(*s);
+}

@@ -37,6 +37,7 @@ int main(void)
     task_create(&task2h, task, (void*)2);
 
     system_start();
+    smphr_destroy(&s);
 
     return 0;
 }
