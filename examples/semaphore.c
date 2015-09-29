@@ -18,7 +18,7 @@ void* task(void* arg)
     printf("Task %d gives the semaphore\n", (unsigned int)id);
     smphr_give(&s);
 
-    for(;;);
+    return NULL;
 }
 
 int main(void)
