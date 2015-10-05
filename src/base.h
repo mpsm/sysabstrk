@@ -4,7 +4,14 @@
 #if defined(HAVE_CONFIG_H)
 #  include "config.h"
 #endif /* defined(HAVE_CONFIG_H) */
-#include "system_config.h"
+
+#if !defined(SYSTEM_CONFIG_TICKS_1S)
+#  define SYSTEM_CONFIG_TICKS_1S                  (1000)
+#endif
+
+#if !defined(SYSTEM_CONFIG_MAX_TASKS)
+#  define SYSTEM_CONFIG_MAX_TASKS                 (10)
+#endif
 
 #include <stdint.h>
 #include <stdbool.h>
