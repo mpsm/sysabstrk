@@ -1,9 +1,7 @@
-#include <system/system_base.h>
-#include <system/time.h>
-#include "system-posix.h"
+#include <system/base.h>
+#include "posix-system.h"
 
 #include <time.h>
-
 #include <stddef.h>
 
 void system_delay(system_tick_t ticks)

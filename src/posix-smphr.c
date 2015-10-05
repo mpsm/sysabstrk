@@ -1,6 +1,7 @@
-#include <system/system_base.h>
+#include <system/base.h>
 #include <system/smphr.h>
-#include "system-posix.h"
+
+#include "posix-system.h"
 
 #include <semaphore.h>
 #include <time.h>

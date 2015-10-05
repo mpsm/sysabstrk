@@ -1,7 +1,7 @@
 #ifndef __SYSTEM_TASK_H__
 #define __SYSTEM_TASK_H__
 
-#include <system/system_base.h>
+#include <system/base.h>
 
 #include <stdbool.h>
 

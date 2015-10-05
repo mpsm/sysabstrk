@@ -1,4 +1,4 @@
-#include <system/system_base.h>
+#include <system/base.h>
 #include <system/system.h>
 #include <system/task.h>
 
@@ -9,7 +9,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-#include "system-posix.h"
+#include "posix-system.h"
 
 #define NSEC_IN_SEC (1000000000L)
 

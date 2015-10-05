@@ -1,6 +1,7 @@
 #ifndef __SYSTEM_POSIX_QUEUE_H__
 #define __SYSTEM_POSIX_QUEUE_H__
 
+#include <system/base.h>
 #include <system/smphr.h>
 #include <system/mutex.h>
 

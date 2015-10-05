@@ -1,19 +1,20 @@
-SRCS= task.c queue.c time.c smphr.c mutex.c
-INCS= system.h system_base.h system_config.h task.h queue.h time.h smphr.h mutex.h
+INCS= system.h base.h task.h queue.h smphr.h mutex.h
 
 EXAMPLESDIR= examples
 EXMPLS= simple semaphore queues
 EXBINS= $(patsubst %,$(EXAMPLESDIR)/%,$(EXMPLS))
 
 SYSTEM?= posix
-SRCS+= system-$(SYSTEM).c
 
-SRCDIR= src/$(SYSTEM)
+SRCDIR= src
 OBJDIR= objs
 INCDIR= include/system
 
+SRCS= $(wildcard $(SRCDIR)/$(SYSTEM)-*.c)
+$(warning $(SRCS))
 INCLUDES= $(patsubst %.h,$(INCDIR)/%.h,$(INCS))
-OBJS= $(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
+OBJS= $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCS))
+$(warning $(OBJS))
 
 CC= gcc
 LD= gcc
@@ -37,7 +38,7 @@ $(TARGET): $(OBJS)
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLUDES) | $(OBJDIR)
 	$(CC) -c $(CFLAGS) $< -o $@
 
-$(INCDIR)/%.h: $(SRCDIR)/../%.h | $(INCDIR)
+$(INCDIR)/%.h: $(SRCDIR)/%.h | $(INCDIR)
 	cp $< $@
 
 $(OBJDIR) $(INCDIR):
