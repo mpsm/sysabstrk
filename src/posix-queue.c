@@ -96,3 +96,13 @@ bool queue_pop(queue_t *queue, void *el, system_tick_t ticks)
 
     return true;
 }
+
+void queue_destroy(queue_t *queue)
+{
+    posix_queue_t *q = *(posix_queue_t **)queue;
+
+    smphr_destroy(&q->sem);
+    mutex_destroy(&q->mtx);
+    free(q->data);
+    free(q);
+}

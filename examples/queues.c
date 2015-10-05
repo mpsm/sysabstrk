@@ -55,6 +55,7 @@ int main(void)
     }
     
     system_start();
+    queue_destroy(&q);
 
     return 0;
 }

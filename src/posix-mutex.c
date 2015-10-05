@@ -18,3 +18,8 @@ bool mutex_unlock(mutex_t *m)
 {
     return smphr_give((smphr_t *)m);
 }
+
+void mutex_destroy(mutex_t *m)
+{
+    return smphr_destroy((smphr_t *)m);
+}
