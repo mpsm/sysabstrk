@@ -11,10 +11,8 @@ OBJDIR= objs
 INCDIR= include/system
 
 SRCS= $(wildcard $(SRCDIR)/$(SYSTEM)-*.c)
-$(warning $(SRCS))
 INCLUDES= $(patsubst %.h,$(INCDIR)/%.h,$(INCS))
 OBJS= $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCS))
-$(warning $(OBJS))
 
 CC= gcc
 LD= gcc
