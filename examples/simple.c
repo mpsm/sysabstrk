@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdio.h>
 
-void* test(void* arg)
+void test(void* arg)
 {
     while(true) {
         system_delay(500);

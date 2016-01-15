@@ -7,7 +7,7 @@
 
 static queue_t q;
 
-void *producer(void *arg)
+void producer(void *arg)
 {
     uintptr_t id = (uintptr_t)arg;
 
@@ -18,11 +18,9 @@ void *producer(void *arg)
         printf("Producer %u pushed\n", (unsigned int)id);
         queue_push(&q, &id, 1000);
     }
-
-    return NULL;
 }
 
-void *consumer(void *arg)
+void consumer(void *arg)
 {
     printf("Consumer started\n");
 
@@ -34,8 +32,6 @@ void *consumer(void *arg)
         }
         printf("Consumer timeout\n");
     }
-
-    return NULL;
 }
 
 #define PRODUCERS 5

@@ -16,6 +16,7 @@
 
 static unsigned int task_count = 0;
 static posix_task_t *tasks[SYSTEM_CONFIG_MAX_TASKS];
+static void *posix_task_wrapper(void *arg);
 
 void system_init()
 {
@@ -67,7 +68,7 @@ bool system_start()
     /* spawn threads */
     for(i = 0; i < task_count; ++i) {
         posix_task_t *t = tasks[i];
-        if(pthread_create((pthread_t *)t->handle, NULL, t->rt, t->arg) != 0) {
+        if(pthread_create((pthread_t *)t->handle, NULL, posix_task_wrapper, t) != 0) {
             return false;
         } 
     }
@@ -85,4 +86,14 @@ bool system_start()
     }
 
     return retval;
+}
+
+static void *posix_task_wrapper(void *arg)
+{
+    posix_task_t *t = (posix_task_t *)arg;
+    
+    /* call actual task */
+    t->rt(t->arg);
+
+    return NULL;
 }

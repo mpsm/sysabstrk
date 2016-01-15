@@ -7,7 +7,7 @@
 
 smphr_t s;
 
-void* task(void* arg)
+void task(void* arg)
 {
     uintptr_t id = (uintptr_t)arg;
     smphr_take(&s, 1000);
@@ -16,8 +16,6 @@ void* task(void* arg)
     system_delay(500);
     printf("Task %d gives the semaphore\n", (unsigned int)id);
     smphr_give(&s);
-
-    return NULL;
 }
 
 int main(void)
