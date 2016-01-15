@@ -9,17 +9,17 @@ bool mutex_init(mutex_t *m)
     return smphr_init((smphr_t *)m, 1);
 }
 
-bool mutex_lock(mutex_t *m, system_tick_t t)
+bool mutex_lock(mutex_t m, system_tick_t t)
 {
-    return smphr_take((smphr_t *)m, t);
+    return smphr_take((smphr_t)m, t);
 }
 
-bool mutex_unlock(mutex_t *m)
+bool mutex_unlock(mutex_t m)
 {
-    return smphr_give((smphr_t *)m);
+    return smphr_give((smphr_t)m);
 }
 
-void mutex_destroy(mutex_t *m)
+void mutex_destroy(mutex_t m)
 {
-    return smphr_destroy((smphr_t *)m);
+    return smphr_destroy((smphr_t)m);
 }

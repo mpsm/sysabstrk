@@ -18,7 +18,7 @@ bool smphr_init(smphr_t *s, unsigned int value)
     return sem_init(*(sem_t **)s, 0, value) == 0;
 }
 
-bool smphr_take(smphr_t *s, system_tick_t ticks)
+bool smphr_take(smphr_t s, system_tick_t ticks)
 {
     struct timespec wait;
 
@@ -34,12 +34,12 @@ bool smphr_take(smphr_t *s, system_tick_t ticks)
     return sem_timedwait(*(sem_t **)s, &wait) == 0;
 }
 
-bool smphr_give(smphr_t *s)
+bool smphr_give(smphr_t s)
 {
     return sem_post(*(sem_t **)s) == 0;
 }
 
-void smphr_destroy(smphr_t *s)
+void smphr_destroy(smphr_t s)
 {
-    free(*s);
+    free(*(sem_t **)s);
 }

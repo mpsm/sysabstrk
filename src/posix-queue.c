@@ -45,7 +45,7 @@ ok:
     return result;
 }
 
-size_t queue_elements_count(queue_t *queue)
+size_t queue_elements_count(queue_t queue)
 {
     posix_queue_t *q = *(posix_queue_t **)queue;
     size_t elements;
@@ -57,7 +57,7 @@ size_t queue_elements_count(queue_t *queue)
     return elements;
 }
 
-bool queue_push(queue_t *queue, void *el, system_tick_t ticks)
+bool queue_push(queue_t queue, void *el, system_tick_t ticks)
 {
     posix_queue_t *q = *(posix_queue_t **)queue;
     void *start;
@@ -78,7 +78,7 @@ bool queue_push(queue_t *queue, void *el, system_tick_t ticks)
     return true;
 }
 
-bool queue_pop(queue_t *queue, void *el, system_tick_t ticks)
+bool queue_pop(queue_t queue, void *el, system_tick_t ticks)
 {
     posix_queue_t *q = *(posix_queue_t **)queue;
     void *start;
@@ -97,7 +97,7 @@ bool queue_pop(queue_t *queue, void *el, system_tick_t ticks)
     return true;
 }
 
-void queue_destroy(queue_t *queue)
+void queue_destroy(queue_t queue)
 {
     posix_queue_t *q = *(posix_queue_t **)queue;
 

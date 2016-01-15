@@ -19,13 +19,13 @@ mutex_init(mutex_t *m)
 }
 
 bool
-mutex_lock(mutex_t *m, system_tick_t ticks)
+mutex_lock(mutex_t m, system_tick_t ticks)
 {
     return xSemaphoreTake(*(xSemaphoreHandle *)m, ticks) == pdTRUE;
 }
 
 bool
-mutex_unlock(mutex_t *m)
+mutex_unlock(mutex_t m)
 {
     return xSemaphoreGive(*(xSemaphoreHandle *)m) == pdTRUE;
 }
