@@ -10,11 +10,12 @@
 #include <string.h>
 
 #include "posix-system.h"
+#include "posix-task.h"
 
 #define NSEC_IN_SEC (1000000000L)
 
 static unsigned int task_count = 0;
-static task_t *tasks[SYSTEM_CONFIG_MAX_TASKS];
+static posix_task_t *tasks[SYSTEM_CONFIG_MAX_TASKS];
 
 void system_init()
 {
@@ -41,7 +42,7 @@ void system_delay_to_timespec(system_tick_t delay, struct timespec *ts)
     ts->tv_nsec %= NSEC_IN_SEC;
 }
 
-bool system_task_reg(task_t *t)
+bool system_task_reg(posix_task_t *t)
 {
     if(task_count < SYSTEM_CONFIG_MAX_TASKS) {
         tasks[task_count] = t;
@@ -65,8 +66,8 @@ bool system_start()
 
     /* spawn threads */
     for(i = 0; i < task_count; ++i) {
-        task_t *t = tasks[i];
-        if(pthread_create((pthread_t*)t->handle, NULL, t->rt, t->arg) != 0) {
+        posix_task_t *t = tasks[i];
+        if(pthread_create((pthread_t *)t->handle, NULL, t->rt, t->arg) != 0) {
             return false;
         } 
     }

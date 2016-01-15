@@ -10,14 +10,18 @@
 
 bool task_create(task_t *tsk, task_routine_t rt, void *arg)
 {
-    tsk->rt = rt;
-    tsk->arg = arg;
-    tsk->handle = malloc(sizeof(pthread_t));
+    posix_task_t *t = malloc(sizeof(posix_task_t));
 
-    return system_task_reg(tsk);
+    *tsk = (task_t)t;
+    t->rt = rt;
+    t->arg = arg;
+    t->handle = malloc(sizeof(pthread_t));
+
+    return system_task_reg(t);
 }
 
-void task_destroy(task_t *tsk)
+void task_destroy(task_t t)
 {
-    free(tsk->handle);
+    free(((posix_task_t *)t)->handle);
+    free(t);
 }
