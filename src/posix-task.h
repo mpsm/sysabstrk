@@ -4,11 +4,14 @@
 #include <system/base.h>
 #include <system/task.h>
 
+#include <stddef.h>
 #include <pthread.h>
 
 typedef struct {
     task_routine_t rt;
     void *arg;
+    unsigned int prio;
+    size_t stack_size;
     pthread_t *handle;
 } posix_task_t;
 

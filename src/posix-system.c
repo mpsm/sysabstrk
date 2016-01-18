@@ -65,6 +65,9 @@ bool system_start()
     sigfillset(&sigs);
     pthread_sigmask(SIG_BLOCK, &sigs, NULL);
 
+    /* TODO: set thread stack size */
+    /* TODO: set thread priority */
+
     /* spawn threads */
     for(i = 0; i < task_count; ++i) {
         posix_task_t *t = tasks[i];

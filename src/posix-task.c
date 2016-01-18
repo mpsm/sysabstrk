@@ -8,13 +8,15 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-bool task_create(task_t *tsk, task_routine_t rt, void *arg)
+bool task_create(task_t *tsk, task_routine_t rt, void *arg, unsigned int prio, size_t stack_size)
 {
     posix_task_t *t = malloc(sizeof(posix_task_t));
 
     *tsk = (task_t)t;
     t->rt = rt;
     t->arg = arg;
+    t->prio = prio;
+    t->stack_size = stack_size;
     t->handle = malloc(sizeof(pthread_t));
 
     return system_task_reg(t);
