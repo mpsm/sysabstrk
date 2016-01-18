@@ -10,6 +10,7 @@
 typedef struct {
     task_routine_t rt;
     void *arg;
+    const char * name;
     unsigned int prio;
     size_t stack_size;
     pthread_t *handle;
