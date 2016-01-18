@@ -4,7 +4,8 @@
 #include <time.h>
 #include <stddef.h>
 
-void system_delay(system_tick_t ticks)
+void
+system_delay(system_tick_t ticks)
 {
     struct timespec delay;
 

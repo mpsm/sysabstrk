@@ -44,7 +44,7 @@ int main(void)
 
     system_init();
 
-    queue_create(&q, PRODUCERS, sizeof(uintptr_t));
+    queue_create(&q, PRODUCERS, sizeof(uintptr_t), NULL);
     task_create(&c, consumer, NULL, NULL, 0, 0);
     for(i = 0; i < PRODUCERS; ++i) {
         task_create(&p[i], producer, (void*)(uintptr_t)i + 1, NULL, 0, 0);

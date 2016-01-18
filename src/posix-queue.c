@@ -11,7 +11,8 @@
 #include <stddef.h>
 #include <string.h>
 
-bool queue_create(queue_t *queue, size_t size, size_t elsize)
+bool
+queue_create(queue_t *queue, size_t size, size_t elsize, const char *name)
 {
     posix_queue_t *q = malloc(sizeof(posix_queue_t));
     bool result = false;
@@ -26,11 +27,12 @@ bool queue_create(queue_t *queue, size_t size, size_t elsize)
         goto error;
     }
     
-    if(!smphr_init(&q->sem, 0)) {
+    /* TODO: create names for queue mutex and sem */
+    if(!smphr_init(&q->sem, 0, NULL)) {
         goto error;
     }
 
-    if(!mutex_init(&q->mtx)) {
+    if(!mutex_init(&q->mtx, NULL)) {
         goto error;
     }
 
@@ -45,7 +47,8 @@ ok:
     return result;
 }
 
-size_t queue_elements_count(queue_t queue)
+size_t
+queue_elements_count(queue_t queue)
 {
     posix_queue_t *q = *(posix_queue_t **)queue;
     size_t elements;
@@ -57,7 +60,8 @@ size_t queue_elements_count(queue_t queue)
     return elements;
 }
 
-bool queue_push(queue_t queue, void *el, system_tick_t ticks)
+bool
+queue_push(queue_t queue, void *el, system_tick_t ticks)
 {
     posix_queue_t *q = *(posix_queue_t **)queue;
     void *start;
@@ -78,7 +82,8 @@ bool queue_push(queue_t queue, void *el, system_tick_t ticks)
     return true;
 }
 
-bool queue_pop(queue_t queue, void *el, system_tick_t ticks)
+bool
+queue_pop(queue_t queue, void *el, system_tick_t ticks)
 {
     posix_queue_t *q = *(posix_queue_t **)queue;
     void *start;
@@ -97,7 +102,8 @@ bool queue_pop(queue_t queue, void *el, system_tick_t ticks)
     return true;
 }
 
-void queue_destroy(queue_t queue)
+void
+queue_destroy(queue_t queue)
 {
     posix_queue_t *q = *(posix_queue_t **)queue;
 

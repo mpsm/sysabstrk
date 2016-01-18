@@ -9,10 +9,14 @@
 #include <stddef.h>
 
 bool
-mutex_init(mutex_t *m)
+mutex_init(mutex_t *m, const char *name)
 {
-    xSemaphoreHandle handle = xSemaphoreCreateMutex();
+    xSemaphoreHandle handle;
 
+    handle = xSemaphoreCreateMutex();
+    if (name != NULL) {
+        vQueueAddToRegistry(handle, (signed char *)name);
+    }
     *m = (mutex_t)handle;
 
     return handle != NULL;

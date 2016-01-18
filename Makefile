@@ -1,4 +1,4 @@
-INCS= system.h base.h task.h queue.h smphr.h mutex.h
+INCS= system.h base.h config.h task.h queue.h smphr.h mutex.h
 
 EXAMPLESDIR= examples
 EXMPLS= simple semaphore queues
@@ -21,6 +21,7 @@ AR= ar
 CFLAGS= -O0 -g
 CFLAGS+= -Wall -Werror
 CFLAGS+= -I $(INCDIR)/../ -I $(SRCDIR)
+CFLAGS+= -DSYSTEM_CONFIG_TYPE_POSIX=1 -DHAVE_CONFIG_H
 LDFLAGS= -lpthread -lrt
 
 TARGET= $(OBJDIR)/libsystem.a

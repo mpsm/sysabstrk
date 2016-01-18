@@ -2,6 +2,7 @@
 #define __SYSTEM_SYSTEM_H__
 
 #include <system/base.h>
+#include <stdbool.h>
 
 /* public methods */
 void system_init(void);

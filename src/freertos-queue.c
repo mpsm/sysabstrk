@@ -8,27 +8,34 @@
 #include <stdint.h>
 #include <stddef.h>
 
-bool queue_create(queue_t *q, size_t size, size_t elsize)
+bool
+queue_create(queue_t *q, size_t size, size_t elsize, const char *name)
 {
     xQueueHandle handle;
 
     handle = xQueueCreate(size, elsize);
+    if (name != NULL) {
+        vQueueAddToRegistry(handle, (signed char *)name);
+    }
     *q = (queue_t)handle;
 
     return handle != NULL;
 }
 
-size_t queue_elements_count(queue_t q)
+size_t
+queue_elements_count(queue_t *q)
 {
-    return uxQueueMessagesWaiting(q);
+    return uxQueueMessagesWaiting(*q);
 }
 
-bool queue_push(queue_t q, void *el, system_tick_t ticks)
+bool
+queue_push(queue_t *q, void *el, system_tick_t ticks)
 {
-    return xQueueSendToBack(q, el, ticks) == pdTRUE;
+    return xQueueSendToBack(*q, el, ticks) == pdTRUE;
 }
 
-bool queue_pop(queue_t q, void *el, system_tick_t ticks)
+bool
+queue_pop(queue_t *q, void *el, system_tick_t ticks)
 {
-    return xQueueReceive(q, el, ticks) == pdTRUE;
+    return xQueueReceive(*q, el, ticks) == pdTRUE;
 }

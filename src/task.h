@@ -10,7 +10,7 @@
 typedef void* task_t;
 
 /* task routine */
-typedef void (*task_routine_t)(void *arg);
+typedef SYSTEM_TASK_MODIFIER void (*task_routine_t)(void *arg);
 
 bool task_create(task_t *tsk, task_routine_t rt, void *arg, const char * const tname,
         unsigned int prio, size_t stack_size);
