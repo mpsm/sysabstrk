@@ -30,8 +30,8 @@ int main(void)
 
     smphr_init(&s, 1);
 
-    task_create(&task1h, task, (void*)1);
-    task_create(&task2h, task, (void*)2);
+    task_create(&task1h, task, (void*)1, NULL, 0, 0);
+    task_create(&task2h, task, (void*)2, NULL, 0, 0);
 
     system_start();
     smphr_destroy(&s);
