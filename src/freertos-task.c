@@ -44,7 +44,6 @@ task_get_tick_count(void)
     return xTaskGetTickCount();
 }
 
-
 void
 task_delay_ticks(system_tick_t ticks)
 {
