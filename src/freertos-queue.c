@@ -23,19 +23,19 @@ queue_create(queue_t *q, size_t size, size_t elsize, const char *name)
 }
 
 size_t
-queue_elements_count(queue_t *q)
+queue_elements_count(queue_t q)
 {
-    return uxQueueMessagesWaiting(*q);
+    return uxQueueMessagesWaiting(q);
 }
 
 bool
-queue_push(queue_t *q, void *el, system_tick_t ticks)
+queue_push(queue_t q, void *el, system_tick_t ticks)
 {
-    return xQueueSendToBack(*q, el, ticks) == pdTRUE;
+    return xQueueSendToBack(q, el, ticks) == pdTRUE;
 }
 
 bool
-queue_pop(queue_t *q, void *el, system_tick_t ticks)
+queue_pop(queue_t q, void *el, system_tick_t ticks)
 {
-    return xQueueReceive(*q, el, ticks) == pdTRUE;
+    return xQueueReceive(q, el, ticks) == pdTRUE;
 }
