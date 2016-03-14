@@ -13,7 +13,7 @@ typedef void (*timer_callback_t)(void *handle);
 
 
 
-bool tmr_create(tmr_t *t, bool autoreload, timer_callback_t callback,
+bool tmr_init(tmr_t *t, bool autoreload, timer_callback_t callback,
                   const char *name);
 bool tmr_start(tmr_t *t, system_tick_t period);
 bool tmr_isr_start(tmr_t *t, bool * const woken);

@@ -138,14 +138,14 @@ int main(void)
 
     system_init();
 
-    tmr_create(&test_timer, true, test, NULL);
+    tmr_init(&test_timer, true, test, NULL);
     tmr_start(&test_timer, 250);
-    tmr_create(&test_timer_2, true, test_2, NULL);
+    tmr_init(&test_timer_2, true, test_2, NULL);
     tmr_start(&test_timer_2, 100);
-    tmr_create(&test_timer_3, true, test_3, NULL);
-    tmr_create(&test_timer_4, true, test_4, NULL);
-    tmr_create(&test_timer_5, true, test_5, NULL);
-    tmr_create(&test_timer_6, true, test_6, NULL);
+    tmr_init(&test_timer_3, true, test_3, NULL);
+    tmr_init(&test_timer_4, true, test_4, NULL);
+    tmr_init(&test_timer_5, true, test_5, NULL);
+    tmr_init(&test_timer_6, true, test_6, NULL);
     task_create(&test_task, test_others, NULL, NULL, 0, 0);
     task_create(&test_task_2, test_reset, NULL, NULL, 0, 0);
 

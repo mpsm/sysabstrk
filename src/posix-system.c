@@ -26,7 +26,7 @@ system_init()
 
     memset(tasks, 0, sizeof(tasks));
 
-    tmr_init(&timer_task);
+    tmr_task_init(&timer_task);
 }
 
 void
