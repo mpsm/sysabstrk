@@ -22,8 +22,6 @@ static bool tmr_add_to_timer_list(tmr_t *timer_list, tmr_t new_timer);
 static bool tmr_stop_locked(tmr_t t);
 static bool tmr_start_locked(tmr_t t, system_tick_t period);
 
-system_tick_t tmr_get_period(tmr_t t);
-
 bool 
 tmr_task_init(task_t *t)
 {
