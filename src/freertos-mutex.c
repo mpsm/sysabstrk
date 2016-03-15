@@ -24,11 +24,11 @@ mutex_init(mutex_t *m, const char *name)
 bool
 mutex_lock(mutex_t m, system_tick_t ticks)
 {
-    return xSemaphoreTake(m, ticks) == pdTRUE;
+    return xSemaphoreTake((xSemaphoreHandle)m, ticks) == pdTRUE;
 }
 
 bool
 mutex_unlock(mutex_t m)
 {
-    return xSemaphoreGive(m) == pdTRUE;
+    return xSemaphoreGive((xSemaphoreHandle)m) == pdTRUE;
 }

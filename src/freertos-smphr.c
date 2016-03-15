@@ -6,6 +6,7 @@
 #include <FreeRTOS/semphr.h>
 
 #include <stdbool.h>
+#include <stddef.h>
 
 bool
 smphr_init(smphr_t *s, bool taken, const char *name)
@@ -32,13 +33,13 @@ smphr_init(smphr_t *s, bool taken, const char *name)
 bool
 smphr_take(smphr_t s, system_tick_t ticks)
 {
-    return xSemaphoreTake(s, ticks) == pdTRUE;
+    return xSemaphoreTake((xSemaphoreHandle)s, ticks) == pdTRUE;
 }
 
 bool
 smphr_give(smphr_t s)
 {
-    return xSemaphoreGive(s) == pdTRUE;
+    return xSemaphoreGive((xSemaphoreHandle)s) == pdTRUE;
 }
 
 bool
@@ -47,7 +48,8 @@ smphr_isr_give(smphr_t s, bool * const woken)
     portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
     bool result;
 
-    result = (xSemaphoreGiveFromISR(s, &xHigherPriorityTaskWoken) == pdTRUE);
+    result = (xSemaphoreGiveFromISR((xSemaphoreHandle)s,
+                                     &xHigherPriorityTaskWoken) == pdTRUE);
     if (result) {
         *woken = (xHigherPriorityTaskWoken == pdTRUE);
     }

@@ -34,7 +34,7 @@ task_destroy(task_t t)
 {
 #if (INCLUDE_vTaskDelete == 1)
     if(t != NULL) {
-        vTaskDelete(t);
+        vTaskDelete((xTaskHandle)t);
     }
 #endif /* INCLUDE_vTaskDelete == 1 */
 }
