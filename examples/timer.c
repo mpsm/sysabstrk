@@ -29,13 +29,13 @@ int main(void)
     system_init();
 
     tmr_init(&test_timer, true, test, NULL);
-    tmr_start(&test_timer, 100);
+    tmr_start(test_timer, 100);
     tmr_init(&test_timer_2, true, test_2, NULL);
-    tmr_start(&test_timer_2, 275);
+    tmr_start(test_timer_2, 275);
     tmr_init(&test_timer_3, false, test_3, NULL);
-    tmr_start(&test_timer_3, 1000);
-    tmr_stop(&test_timer);
-    tmr_reset(&test_timer);
+    tmr_start(test_timer_3, 1000);
+    tmr_stop(test_timer);
+    tmr_reset(test_timer);
 
     system_start();
 

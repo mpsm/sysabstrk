@@ -15,52 +15,45 @@ tmr_init(tmr_t *t, bool autoreload, timer_callback_t callback,
 {
     xTimerHandle handle;
 
-    handle = xTimerCreate((signed char *)name, TMR_CREATE_DEFAULT_PERIOD, autoreload, t, callback);
+    handle = xTimerCreate((signed char *)name, TMR_CREATE_DEFAULT_PERIOD,
+                          autoreload, t, callback);
     if (handle == NULL) {
         return (false);
     }
 
-    t->handle = handle;
-    t->period = 0;
+    *t = (tmr_t)handle;
 
     return (true);
 }
 
 bool
-tmr_start(tmr_t *t, system_tick_t period)
+tmr_start(tmr_t t, system_tick_t period)
 {
 
-    if (period != t->period) {
-        if (xTimerChangePeriod(t->handle, period, SYSTEM_NO_WAIT) != pdPASS) {
-            return (false);
-        }
-        t->period = period;
-    }
-
-    return (xTimerStart(t->handle, SYSTEM_NO_WAIT) == pdPASS);
-}
-
-bool
-tmr_reset(tmr_t *t)
-{
-
-    if (t->period == 0) {
+    if (xTimerChangePeriod((xTimerHandle)t, period, SYSTEM_NO_WAIT) != pdPASS) {
         return (false);
     }
 
-    return (xTimerReset(t->handle, SYSTEM_NO_WAIT) == pdPASS);
+    return (xTimerStart((xTimerHandle)t, SYSTEM_NO_WAIT) == pdPASS);
 }
 
 bool
-tmr_stop(tmr_t *t)
+tmr_reset(tmr_t t)
 {
 
-    return (xTimerStop(t->handle, SYSTEM_NO_WAIT) == pdPASS);
+    return (xTimerReset((xTimerHandle)t, SYSTEM_NO_WAIT) == pdPASS);
 }
 
 bool
-tmr_is_running(tmr_t *t)
+tmr_stop(tmr_t t)
 {
 
-    return (xTimerIsTimerActive(t->handle) != pdFALSE);
+    return (xTimerStop((xTimerHandle)t, SYSTEM_NO_WAIT) == pdPASS);
+}
+
+bool
+tmr_is_running(tmr_t t)
+{
+
+    return (xTimerIsTimerActive((xTimerHandle)t) != pdFALSE);
 }

@@ -2,11 +2,13 @@
 #include <system/timer.h>
 #include <system/task.h>
 
+#include "posix-timer.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdbool.h>
 
-tmr_t test_timer, test_timer_2, test_timer_3, test_timer_4, test_timer_5, test_timer_6;
+tmr_t test_timer, test_timer_2, test_timer_3,
+      test_timer_4, test_timer_5, test_timer_6;
 int global_flag = 0;
 int test_timer_4_flag = 3;
 int full_time = 0;
@@ -33,23 +35,28 @@ void test()
 }
 void test_2()
 {
-    printf("Timer 2 wake up at -> %d (%d) tick \n", system_get_tick_count(), test_timer_2.period);
+    printf("Timer 2 wake up at -> %d (%d) tick \n",
+           system_get_tick_count(), ((posix_timer_t*)(test_timer_2))->period);
 }
 void test_3()
 {
-    printf("Timer 3 wake up at -> %d (%d) tick \n", system_get_tick_count(), test_timer_3.period);
+    printf("Timer 3 wake up at -> %d (%d) tick \n",
+           system_get_tick_count(), ((posix_timer_t*)(test_timer_3))->period);
 }
 void test_4()
 {    
-    printf("Timer 4 wake up at -> %d (%d) tick \n", system_get_tick_count(), test_timer_4.period);
+    printf("Timer 4 wake up at -> %d (%d) tick \n",
+           system_get_tick_count(), ((posix_timer_t*)(test_timer_4))->period);
 }
 void test_5()
 {    
-    printf("Timer 5 wake up at -> %d (%d) tick \n", system_get_tick_count(), test_timer_5.period);
+    printf("Timer 5 wake up at -> %d (%d) tick \n",
+           system_get_tick_count(), ((posix_timer_t*)(test_timer_5))->period);
 }
 void test_6()
 {    
-    printf("Timer 6 wake up at -> %d (%d) tick \n", system_get_tick_count(), test_timer_6.period);
+    printf("Timer 6 wake up at -> %d (%d) tick \n",
+           system_get_tick_count(), ((posix_timer_t*)(test_timer_6))->period);
 }
 
 void test_reset(void* arg)
@@ -61,12 +68,12 @@ void test_reset(void* arg)
         system_delay(99);
         if (full_time > 2500 && full_time < 12500)
         {
-                tmr_stop(&test_timer_2);
+                tmr_stop(test_timer_2);
                 system_delay(250);
         }
         else if (full_time > 500 && full_time <2501){
             if (flag){
-                tmr_reset(&test_timer_2);
+                tmr_reset(test_timer_2);
             }
             flag = !flag;
         }
@@ -94,37 +101,37 @@ void test_others(void* arg)
         system_delay(50);
         switch (full_time){
             case 2000:
-                tmr_start(&test_timer_3,250);
+                tmr_start(test_timer_3,250);
                 break;
             case 3500:
-                tmr_stop(&test_timer_3);
+                tmr_stop(test_timer_3);
                 break;
             case 4500:
-                tmr_start(&test_timer_3,500);
+                tmr_start(test_timer_3,500);
                 break;
             case 5000:
-                tmr_start(&test_timer_5, 1000);
+                tmr_start(test_timer_5, 1000);
                 break;
             case 5250:
-                tmr_start(&test_timer_6, 500);
+                tmr_start(test_timer_6, 500);
                 break;
             case 12500:
-                tmr_stop(&test_timer);
-                tmr_start(&test_timer_2,250);
+                tmr_stop(test_timer);
+                tmr_start(test_timer_2,250);
                 full_time += 1;
                 break;
         }
         
         if (test_timer_4_flag == 0){
-            tmr_start(&test_timer_4, 500);
+            tmr_start(test_timer_4, 500);
             test_timer_4_flag = 3;
         }
         else if (test_timer_4_flag == 1){
-            tmr_stop(&test_timer_4);
+            tmr_stop(test_timer_4);
             test_timer_4_flag = 3;
         }
         else if (test_timer_4_flag == 2){
-            tmr_reset(&test_timer_4);
+            tmr_reset(test_timer_4);
             test_timer_4_flag = 3;
         }
     }
@@ -139,9 +146,9 @@ int main(void)
     system_init();
 
     tmr_init(&test_timer, true, test, NULL);
-    tmr_start(&test_timer, 250);
+    tmr_start(test_timer, 250);
     tmr_init(&test_timer_2, true, test_2, NULL);
-    tmr_start(&test_timer_2, 100);
+    tmr_start(test_timer_2, 100);
     tmr_init(&test_timer_3, true, test_3, NULL);
     tmr_init(&test_timer_4, true, test_4, NULL);
     tmr_init(&test_timer_5, true, test_5, NULL);

@@ -19,14 +19,17 @@ static unsigned int task_count = 0;
 static posix_task_t *tasks[SYSTEM_CONFIG_MAX_TASKS];
 static void *posix_task_wrapper(void *arg);
 
+#if (SYSTEM_CONFIG_USE_TIMERS == 1)
+static task_t timer_task;
+#endif
+
 void
 system_init()
 {
-    task_t timer_task;
-
     memset(tasks, 0, sizeof(tasks));
-
+#if (SYSTEM_CONFIG_USE_TIMERS == 1)
     tmr_task_init(&timer_task);
+#endif
 }
 
 void
@@ -117,7 +120,9 @@ system_start()
         task_destroy(tasks[i]);
     }
 
+#if (SYSTEM_CONFIG_USE_TIMERS == 1)
     tmr_destroy_list();
+#endif
 
     return retval;
 }
