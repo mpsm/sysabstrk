@@ -25,17 +25,39 @@ queue_create(queue_t *q, size_t size, size_t elsize, const char *name)
 size_t
 queue_elements_count(queue_t q)
 {
-    return uxQueueMessagesWaiting(q);
+    return uxQueueMessagesWaiting((xQueueHandle)q);
 }
 
 bool
 queue_push(queue_t q, void *el, system_tick_t ticks)
 {
-    return xQueueSendToBack(q, el, ticks) == pdTRUE;
+    return xQueueSendToBack((xQueueHandle)q, el, ticks) == pdTRUE;
+}
+
+bool
+queue_push_to_front(queue_t q, void *el, system_tick_t ticks)
+{
+
+    return xQueueSendToFront((xQueueHandle)q, el, ticks) == pdTRUE;
+}
+
+bool
+queue_isr_push(queue_t q, void *el, bool * const woken)
+{
+    portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
+    bool result;
+
+    result = (xQueueSendToBackFromISR((xQueueHandle)q, el,
+                                      &xHigherPriorityTaskWoken) == pdTRUE);
+    if (result) {
+        *woken = (xHigherPriorityTaskWoken == pdTRUE);
+    }
+
+    return result;
 }
 
 bool
 queue_pop(queue_t q, void *el, system_tick_t ticks)
 {
-    return xQueueReceive(q, el, ticks) == pdTRUE;
+    return xQueueReceive((xQueueHandle)q, el, ticks) == pdTRUE;
 }

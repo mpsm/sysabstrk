@@ -11,6 +11,7 @@
 
 #include "posix-system.h"
 #include "posix-task.h"
+#include "posix-timer.h"
 
 #define NSEC_IN_SEC (1000000000L)
 
@@ -18,18 +19,25 @@ static unsigned int task_count = 0;
 static posix_task_t *tasks[SYSTEM_CONFIG_MAX_TASKS];
 static void *posix_task_wrapper(void *arg);
 
+#if (SYSTEM_CONFIG_USE_TIMERS == 1)
+static task_t timer_task;
+#endif
+
 void
 system_init()
 {
     memset(tasks, 0, sizeof(tasks));
+#if (SYSTEM_CONFIG_USE_TIMERS == 1)
+    tmr_task_init(&timer_task);
+#endif
 }
 
 void
 system_ticks_to_timespec(system_tick_t ticks, struct timespec *ts)
 {
-    ts->tv_sec = ticks / SYSTEM_CONFIG_POSIX_TICKS_1S;
-    ticks %= SYSTEM_CONFIG_POSIX_TICKS_1S;
-    ts->tv_nsec = NSEC_IN_SEC / SYSTEM_CONFIG_POSIX_TICKS_1S * ticks;
+    ts->tv_sec = ticks / SYSTEM_TICK_RATE_MS;
+    ticks %= SYSTEM_TICK_RATE_MS;
+    ts->tv_nsec = NSEC_IN_SEC / SYSTEM_TICK_RATE_MS * ticks;
 }
 
 void
@@ -44,6 +52,25 @@ system_delay_to_timespec(system_tick_t delay, struct timespec *ts)
     ts->tv_sec += ct.tv_sec;
     ts->tv_sec += ts->tv_nsec / NSEC_IN_SEC;
     ts->tv_nsec %= NSEC_IN_SEC;
+}
+
+void
+system_delay(system_tick_t ticks)
+{
+    struct timespec delay;
+
+    system_ticks_to_timespec(ticks, &delay);
+    nanosleep(&delay, NULL);
+}
+
+system_tick_t
+system_get_tick_count(void)
+{
+    struct timespec ct;
+
+    clock_gettime(CLOCK_REALTIME, &ct);
+    return (ct.tv_sec * SYSTEM_TICK_RATE_MS)
+        + (ct.tv_nsec / (NSEC_IN_SEC / SYSTEM_TICK_RATE_MS));
 }
 
 bool
@@ -92,6 +119,10 @@ system_start()
         retval &= pthread_join(*(pthread_t *)tasks[i]->handle, NULL);
         task_destroy(tasks[i]);
     }
+
+#if (SYSTEM_CONFIG_USE_TIMERS == 1)
+    tmr_destroy_list();
+#endif
 
     return retval;
 }
